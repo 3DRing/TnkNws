@@ -2,6 +2,7 @@ package com.ringov.tnknws
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.ringov.tnknws.feed.FeedFragment
 
 class MainActivity : AppCompatActivity() {
 

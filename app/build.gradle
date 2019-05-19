@@ -3,11 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+def BUILD_NUMBER_FILE = "build_number.txt"
+
 def appVersion = [
         major: 0,
         minor: 1,
         patch: 0,
-        build: 1
+        build: Integer.parseInt(rootProject.file(BUILD_NUMBER_FILE).text.trim()),
 ]
 
 def loadProps(fileName) {

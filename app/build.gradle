@@ -1,0 +1,95 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+def appVersion = [
+        major: 0,
+        minor: 1,
+        patch: 0,
+        build: 1
+]
+
+def loadProps(fileName) {
+    def propertiesFile = rootProject.file(fileName)
+    def props = new Properties()
+    if (propertiesFile.exists()) {
+        props.load(new FileInputStream(propertiesFile))
+    }
+    return props
+}
+
+def RELEASE_KEY_STORE_DIR = "../RingovReleaseKeystore/"
+def RELEASE_KEY_STORE_PROPERTIES_FILE_NAME = "keystore_release.properties"
+
+def hasRelease = rootProject.file(RELEASE_KEY_STORE_DIR + "release.jks").exists()
+def keystoreReleaseProperties = hasRelease ? loadProps(RELEASE_KEY_STORE_DIR
+        + RELEASE_KEY_STORE_PROPERTIES_FILE_NAME) : new Properties()
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.ringov.convertcurrency"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode appVersion.build
+        versionName "${appVersion.major}.${appVersion.minor}.${appVersion.patch}"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+
+    signingConfigs {
+        release {
+            if (hasRelease) {
+                storeFile rootProject.file(RELEASE_KEY_STORE_DIR
+                        + keystoreReleaseProperties['storeFile'])
+                storePassword keystoreReleaseProperties['storePassword']
+                keyAlias keystoreReleaseProperties['keyAlias']
+                keyPassword keystoreReleaseProperties['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
+            debuggable false
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            shrinkResources false
+            minifyEnabled false
+            debuggable true
+
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+    }
+}
+
+kapt {
+    generateStubs = true
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+    implementation "ru.ztrap.iconics:core-ktx:$versions.coreKtx"
+    implementation "androidx.appcompat:appcompat:$versions.appCompat"
+    implementation "com.google.android.material:material:$versions.material"
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxJava"
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid"
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    implementation "androidx.recyclerview:recyclerview:$versions.recycler"
+
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakcanary"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakcanary"
+
+    kapt "com.google.dagger:dagger-compiler:$versions.daggerCompiler"
+}

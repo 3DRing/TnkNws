@@ -2,9 +2,17 @@ package com.ringov.tnknws
 
 import android.app.Application
 import android.os.StrictMode
+import com.ringov.tnknws.dagger.AppComponent
+import com.ringov.tnknws.dagger.DaggerAppComponent
 import com.squareup.leakcanary.LeakCanary
 
 class App : Application() {
+
+    companion object {
+        lateinit var component: AppComponent
+            private set
+    }
+
 
     override fun onCreate() {
         super.onCreate()
@@ -16,7 +24,15 @@ class App : Application() {
         LeakCanary.install(this)
         initStrictMode()
 
+        initDependencies()
         Logger.d("App created")
+    }
+
+
+    private fun initDependencies() {
+        component = DaggerAppComponent
+            .builder()
+            .build()
     }
 
     private fun initStrictMode() {

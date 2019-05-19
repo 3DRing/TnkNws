@@ -1,11 +1,10 @@
-package com.ringov.tnknws.ui.feed
+package com.ringov.tnknws.ui.content
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ringov.tnknws.App
 import com.ringov.tnknws.R
 import com.ringov.tnknws.data.NewsRepo
-import com.ringov.tnknws.domain.FeedUsecase
-import com.ringov.tnknws.ui.Screen
+import com.ringov.tnknws.domain.GetNewsContentUsecase
 import com.ringov.tnknws.ui.base.BaseFragment
 import com.ringov.tnknws.utils.Logger
 import com.ringov.tnknws.utils.RxSchedulers
@@ -13,18 +12,17 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_feed.*
 import javax.inject.Inject
 
-class FeedFragment : BaseFragment() {
 
-    private lateinit var adapter: FeedAdapter
+class SingleNewsFragment : BaseFragment() {
 
     @Inject
     lateinit var newsRepo: NewsRepo
     @Inject
-    lateinit var feedUsecase: FeedUsecase
+    lateinit var getNewsContentUsecase: GetNewsContentUsecase
     @Inject
     lateinit var schedulers: RxSchedulers
 
-    lateinit var newsDisposable: Disposable
+    lateinit var contentDisposable: Disposable
 
     override fun inject() {
         App.component.inject(this)
@@ -34,17 +32,16 @@ class FeedFragment : BaseFragment() {
 
     override fun initViews() {
         feed_list.layoutManager = LinearLayoutManager(context)
-        adapter = FeedAdapter(this::onItemClick)
-        feed_list.adapter = adapter
 
-        newsDisposable = feedUsecase.execute()
-            .observeOn(schedulers.mainThread)
-            .subscribe(adapter::update) { Logger.e(it) }
-    }
-
-    private fun onItemClick(id: Long) {
-        Logger.d("Item clicked: $id")
-        newsRepo.update(id)
-        openScreen(Screen.SingleNews)
+        val id = newsRepo.currentNews()
+        if (id >= 0) {
+            contentDisposable = getNewsContentUsecase.execute(id)
+                .observeOn(schedulers.mainThread)
+                .subscribe({
+                    Logger.d(it.toString())
+                }) { Logger.e(it) }
+        } else {
+            Logger.w("WARNING: Single news screen has been opened with invalid id = $id")
+        }
     }
 }

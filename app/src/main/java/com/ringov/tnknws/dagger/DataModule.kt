@@ -2,15 +2,21 @@ package com.ringov.tnknws.dagger
 
 import com.google.gson.Gson
 import com.ringov.tnknws.data.Api
+import com.ringov.tnknws.data.NewsRepo
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 class DataModule {
+
+    @Singleton
+    @Provides
+    fun provideNewsRepo() = NewsRepo()
 
     @Provides
     fun provideClient() = OkHttpClient()

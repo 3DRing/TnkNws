@@ -2,11 +2,11 @@ package com.ringov.tnknws.ui.feed
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ringov.tnknws.App
-import com.ringov.tnknws.utils.Logger
 import com.ringov.tnknws.R
-import com.ringov.tnknws.utils.RxSchedulers
+import com.ringov.tnknws.domain.FeedUsecase
 import com.ringov.tnknws.ui.base.BaseFragment
-import com.ringov.tnknws.data.Api
+import com.ringov.tnknws.utils.Logger
+import com.ringov.tnknws.utils.RxSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_feed.*
 import javax.inject.Inject
@@ -16,7 +16,7 @@ class FeedFragment : BaseFragment() {
     private lateinit var adapter: FeedAdapter
 
     @Inject
-    lateinit var api: Api
+    lateinit var feedUsecase: FeedUsecase
     @Inject
     lateinit var schedulers: RxSchedulers
 
@@ -33,13 +33,9 @@ class FeedFragment : BaseFragment() {
         adapter = FeedAdapter(this::onItemClick)
         feed_list.adapter = adapter
 
-        adapter.update(listOf(FeedItem(0, "One"), FeedItem(1, "Two"), FeedItem(2, "Three")))
-
-        newsDisposable = api.getNews()
-            .subscribeOn(schedulers.io)
-            .subscribe({
-                Logger.d(it.body().toString())
-            }) { Logger.e(it) }
+        newsDisposable = feedUsecase.execute()
+            .observeOn(schedulers.mainThread)
+            .subscribe(adapter::update) { Logger.e(it) }
     }
 
     private fun onItemClick(id: Long) {

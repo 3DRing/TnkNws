@@ -10,6 +10,7 @@ import com.ringov.tnknws.ui.base.BaseFragment
 import com.ringov.tnknws.utils.Logger
 import com.ringov.tnknws.utils.RxSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_feed.*
 import javax.inject.Inject
 
@@ -24,7 +25,7 @@ class FeedFragment : BaseFragment() {
     @Inject
     lateinit var schedulers: RxSchedulers
 
-    lateinit var newsDisposable: Disposable
+    private var newsDisposable: Disposable = Disposables.empty()
 
     override fun inject() {
         App.component.inject(this)
@@ -33,10 +34,19 @@ class FeedFragment : BaseFragment() {
     override fun getLayout() = R.layout.fragment_feed
 
     override fun initViews() {
+        swipe_layout.setOnRefreshListener(this::updateFeed)
+        initList()
+        updateFeed()
+    }
+
+    private fun initList() {
         feed_list.layoutManager = LinearLayoutManager(context)
         adapter = FeedAdapter(this::onItemClick)
         feed_list.adapter = adapter
+    }
 
+    private fun updateFeed() {
+        newsDisposable.dispose()
         newsDisposable = feedUsecase.execute()
             .observeOn(schedulers.mainThread)
             .subscribe(adapter::update) { Logger.e(it) }

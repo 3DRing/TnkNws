@@ -11,7 +11,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun openScreen(screen: Screen) {
         val fragment = screen.create()
-        supportFragmentManager.beginTransaction()
-            .replace(containerLayoutId(), fragment, fragment.javaClass.name).commit()
+        val transaction = supportFragmentManager.beginTransaction()
+            .replace(containerLayoutId(), fragment, fragment.javaClass.name)
+        if (supportFragmentManager.fragments.size > 0) {
+            transaction.addToBackStack(null)
+        }
+        transaction.commit()
     }
 }

@@ -42,7 +42,6 @@ class SingleNewsFragment : BaseFragment() {
     }
 
     private fun showNews(news: NewsContent) {
-        Logger.d(news.toString())
         title.showHtml(news.title)
         news_content.showHtml(news.text)
     }

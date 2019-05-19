@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ringov.tnknws.R
+import com.ringov.tnknws.utils.showHtml
 
 class FeedAdapter(private val clickCallback: (Long) -> Unit) :
     ListAdapter<FeedItem, FeedAdapter.ViewHolder>(FeedDiffCallback()) {
@@ -29,7 +30,7 @@ class FeedAdapter(private val clickCallback: (Long) -> Unit) :
 
         fun bind(item: FeedItem) {
             itemView.setOnClickListener { clickCallback(item.id) }
-            title.text = item.title
+            title.showHtml(item.title)
         }
     }
 }

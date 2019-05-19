@@ -1,4 +1,4 @@
-package com.ringov.tnknws.feed
+package com.ringov.tnknws.ui.feed
 
 import android.view.LayoutInflater
 import android.view.View

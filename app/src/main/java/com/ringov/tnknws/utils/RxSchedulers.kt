@@ -1,4 +1,4 @@
-package com.ringov.tnknws
+package com.ringov.tnknws.utils
 
 import io.reactivex.Scheduler
 

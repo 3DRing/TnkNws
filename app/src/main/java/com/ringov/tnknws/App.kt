@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.StrictMode
 import com.ringov.tnknws.dagger.AppComponent
 import com.ringov.tnknws.dagger.DaggerAppComponent
+import com.ringov.tnknws.utils.Logger
 import com.squareup.leakcanary.LeakCanary
 
 class App : Application() {

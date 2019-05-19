@@ -1,11 +1,11 @@
-package com.ringov.tnknws.feed
+package com.ringov.tnknws.ui.feed
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ringov.tnknws.App
-import com.ringov.tnknws.Logger
+import com.ringov.tnknws.utils.Logger
 import com.ringov.tnknws.R
-import com.ringov.tnknws.RxSchedulers
-import com.ringov.tnknws.base.BaseFragment
+import com.ringov.tnknws.utils.RxSchedulers
+import com.ringov.tnknws.ui.base.BaseFragment
 import com.ringov.tnknws.data.Api
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_feed.*

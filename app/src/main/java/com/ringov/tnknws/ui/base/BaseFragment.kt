@@ -1,4 +1,4 @@
-package com.ringov.tnknws.base
+package com.ringov.tnknws.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

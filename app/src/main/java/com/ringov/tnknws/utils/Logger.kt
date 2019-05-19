@@ -1,6 +1,7 @@
-package com.ringov.tnknws
+package com.ringov.tnknws.utils
 
 import android.util.Log
+import com.ringov.tnknws.BuildConfig
 
 class Logger {
     companion object {

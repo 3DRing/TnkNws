@@ -1,4 +1,4 @@
-package com.ringov.tnknws.feed
+package com.ringov.tnknws.ui.feed
 
 import androidx.recyclerview.widget.DiffUtil
 

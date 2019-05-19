@@ -1,6 +1,6 @@
 package com.ringov.tnknws.dagger
 
-import com.ringov.tnknws.feed.FeedFragment
+import com.ringov.tnknws.ui.feed.FeedFragment
 import dagger.Component
 import javax.inject.Singleton
 

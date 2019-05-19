@@ -1,8 +1,9 @@
-package com.ringov.tnknws
+package com.ringov.tnknws.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.ringov.tnknws.feed.FeedFragment
+import com.ringov.tnknws.R
+import com.ringov.tnknws.ui.feed.FeedFragment
 
 class MainActivity : AppCompatActivity() {
 

@@ -46,6 +46,7 @@ class FeedFragment : BaseFragment() {
     }
 
     private fun updateFeed() {
+        swipe_layout.isRefreshing = false
         newsDisposable.dispose()
         newsDisposable = feedUsecase.execute()
             .observeOn(schedulers.mainThread)

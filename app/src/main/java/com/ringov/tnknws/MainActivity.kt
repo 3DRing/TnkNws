@@ -2,13 +2,17 @@ package com.ringov.tnknws
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tv.text = BuildConfig.VERSION_CODE.toString()
+        openFeedFragment()
+    }
+
+    private fun openFeedFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, FeedFragment(), FeedFragment::class.java.name).commit()
     }
 }
